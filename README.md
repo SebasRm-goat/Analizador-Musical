@@ -13,11 +13,11 @@ The program runs in the terminal using Python 3. It applies algorithms, function
 **Algorithm**
 
 Input: 
-Menu option. 
-Root note and scale type (major or minor). 
-Chords for progression analysis. 
-Number of chords for a generated progression. 
-Option to save or view progressions.
+Menu option.    
+Root note and scale type (major or minor).    
+Chords for progression analysis.    
+Number of chords for a generated progression.    
+Option to save or view progressions.   
 
 Process:
 1. Start the program and display the main menu.
@@ -39,9 +39,9 @@ Process:
 17. Exit the program if they select exit option.
 
 Output:
-Generated scale and chords.
-Chord progression analysis.
-Degree of each chord.
-Whether each chord belongs to the key.
-Generated chord progression.
-Saved or previously saved progressions.
+Generated scale and chords.   
+Chord progression analysis.   
+Degree of each chord.   
+Whether each chord belongs to the key.   
+Generated chord progression.   
+Saved or previously saved progressions.   
