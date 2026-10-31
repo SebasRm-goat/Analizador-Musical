@@ -12,8 +12,12 @@ SCALE_INTERVALS = [2, 2, 1, 2, 2, 2, 1]
 TRIAD_STEPS = [0, 2, 4]
 
 import random 
+
+
 """
+--------------------------------------------------------------------------------------
  - - - - -- - - - -   - - - - - Musical functions - - - - - - - - -  - - -  - - - - - 
+--------------------------------------------------------------------------------------
 """
 
 def get_note_index(note):
@@ -102,7 +106,9 @@ def identify_chord_type(triad):
     
     
 """
-- - - - - - - - - - - -- List and matrix functions - - - - - - - -  - - - - - - - 
+-----------------------------------------------------------------------------
+- - - - -- - - - - - -  List and matrix functions - - - - - - - - - - - - - - 
+-----------------------------------------------------------------------------
 """
 
 
@@ -122,7 +128,6 @@ def get_chord_symbol(root, chord_type):
         return None
 
     return root + suffix
-
 
 
 def build_chord_matrix(scale):
@@ -145,6 +150,50 @@ def build_chord_matrix(scale):
     return chord_matrix
 
 
+def normalize_chord(chord_text):
+    """Clean and validate a chord symbol entered as text."""
+
+    chord_text = chord_text.strip()
+
+    if len(chord_text) == 0:
+        return None
+
+    if len(chord_text) >= 2 and chord_text[1] == "#":
+        root = chord_text[:2].upper()
+        suffix = chord_text[2:].lower()
+
+    else:
+        root = chord_text[0].upper()
+        suffix = chord_text[1:].lower()
+
+    if get_note_index(root) == -1:
+        return None
+
+    if suffix not in ["", "m", "dim"]:
+        return None
+
+    return root + suffix
+
+
+def parse_progression(progression_text):
+    """Convert a progression string into a validated list of chords."""
+
+    chord_texts = progression_text.split("-")
+    progression = []
+
+    if len(chord_texts) < 2:
+        return None
+
+    for chord_text in chord_texts:
+        chord = normalize_chord(chord_text)
+
+        if chord is None:
+            return None
+
+        progression.append(chord)
+
+    return progression
+
 
 def generate_progression(chord_matrix, number_of_chords):
     """Generate a random progression using diatonic chords."""
@@ -162,7 +211,6 @@ def generate_progression(chord_matrix, number_of_chords):
         progression.append(chord_row[3])
 
     return progression
-
 
 
 def analyze_progression(progression, chord_matrix):
@@ -189,11 +237,11 @@ def analyze_progression(progression, chord_matrix):
     return analysis
 
 
-
 """
---------------------- Display functions -----------------------------
+------------------------------------------------------------------------------
+- - - - - - - - - - - - -  Display functions - - - - - - - - - - - - - - - - - 
+------------------------------------------------------------------------------
 """
-
 
 
 def display_chord_matrix(chord_matrix):
@@ -210,7 +258,6 @@ def display_chord_matrix(chord_matrix):
         )
         
 
-
 def display_analysis(analysis):
     """Display the results of a chord progression analysis."""
 
@@ -223,7 +270,6 @@ def display_analysis(analysis):
             "| Result:", chord_data[2]
         )
         
-
 
 def display_major_scale(note):
     """Display a major scale and its seven diatonic triads."""
@@ -252,18 +298,18 @@ def display_progression_library(library):
     print("\nSAVED PROGRESSIONS")
 
     for progression_data in library:
-        print(
-            "\nKey:", progression_data[0],
-            "| Progression:", progression_data[1]
-        )
-
+        print("\nKey:", progression_data[0], "| Progression:", progression_data[1])
+       
         display_analysis(progression_data[2])
     
     
 
 """
-- - - - - - - - - - - -  Testing functions - - - - - - - - - - - - - - - - 
+--------------------------------------------------------------------------
+- - - - - - - - - - - -  Testing functions - - - - - - - - - - - - - - - -
+--------------------------------------------------------------------------
 """
+
 
 def tests():
     """Test musical calculations, matrix construction, and strings."""
@@ -289,7 +335,9 @@ def tests():
     assert len(progression) == 4
 
     for chord in progression:
-        assert chord in [chord_row[3] for chord_row in c_matrix]
+        assert chord in [
+            chord_row[3] for chord_row in c_matrix
+    ]
 
     analysis = analyze_progression(progression, c_matrix)
 
@@ -299,11 +347,12 @@ def tests():
         assert chord_data[2] == "Inside the key"
 
     print("All tests passed.")
-
-
+    
 
 """
-- - - - - - - - - - - - Main program - - - - - - - - - - - - - - - 
+------------------------------------------------------------------------------
+- - - - - - - - - - - - Main program - - - - - - - - - - - - - - - - - - - - - 
+------------------------------------------------------------------------------
 """
 
 
@@ -315,9 +364,10 @@ def main():
     while True:
         print("\n===== MUSICAL ANALYZER AND GENERATOR =====")
         print("1. Generate a major scale and its triads")
-        print("2. Generate a chord progression")
-        print("3. View saved progressions")
-        print("4. Exit")
+        print("2. Analyze a chord progression")
+        print("3. Generate a chord progression")
+        print("4. View saved progressions")
+        print("5. Exit")
 
         option = input("\nSelect an option: ").strip()
 
@@ -325,8 +375,36 @@ def main():
             note = input("Enter the starting note: ").strip().upper()
 
             display_major_scale(note)
-
+        
         elif option == "2":
+
+            note = input("Enter the key note: ").strip().upper()
+            scale = generate_major_scale(note)
+
+            if scale is None:
+                print("Invalid key. Please try again.")
+
+            else:
+                chord_matrix = build_chord_matrix(scale)
+
+                user_input = input(
+                    "Enter the chord progression  (example: C - G - Am - F) : "
+                )
+
+                progression = parse_progression(user_input)
+
+                if progression is None:
+                    print("Invalid progression. Please try again.")
+
+                else:
+                    analysis = analyze_progression(
+                        progression, chord_matrix
+                    )
+
+                    display_analysis(analysis)
+
+
+        elif option == "3":
             
             note = input("Enter the key note: ").strip().upper()
 
@@ -367,15 +445,15 @@ def main():
                         print("Progression saved in the current session.")
 
         
-        elif option == "3":
+        elif option == "4":
             display_progression_library(progression_library)
 
-        elif option == "4":
+        elif option == "5":
             print("Thank you for using the program!")
             break
 
         else:
-            print("Invalid option. Please select 1, 2, 3, or 4.")
+            print("Invalid option. Please select 1, 2, 3, 4 or 5")
 
 
 
