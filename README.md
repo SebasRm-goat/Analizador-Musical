@@ -6,7 +6,7 @@ Chord progressions are used in all types of genres: pop, rock, hip-hop, jazz, el
 
 This project consists of a code that analyzes and generates chord progressions based on a key note which the user selects. The program identifies the corresponding chords for a scale, determines the musical degrees of an entered progression and checks whether the chords belong to the key. In short, it identifies the chords and musical degrees of a progression, determines if they belong to the selected key, and generate new progressions using rules of musical harmony, that are basically the organization and the core blocks for something to sound nice; triads (root note, a third and a fifth), consonance/dissonance and interval stability are some examples of it.
 
-The program can select major keys, generate scales and chords, analyze chord progressions, identify the degree of each chord, check if chords belong to the selected key, generate random progressions, create simple harmonic progressions, save progressions in text files, and view saved progressions. Although, it can't analyze audio files or listen something, detect chords from a song, create audio or MIDI files, do a more advanced music analysis or use AI or machine learning to learn progressions.
+The program can select major keys, generate scales and chords, analyze chord progressions, identify the degree of each chord, check if chords belong to the selected key, generate random progressions, create simple harmonic progressions, save progressions in text files, and view or delete saved progressions. Although, it can't analyze audio files or listen something, detect chords from a song, create audio or MIDI files, do a more advanced music analysis or use AI or machine learning to learn progressions.
 
 The program runs in the terminal using Python 3. It applies algorithms, functions, data structures, loops, conditionals, random generation, and file handling.
 
@@ -21,7 +21,9 @@ Chords for progression analysis.
 
 Number of chords for a generated progression.
 
-Option to save or view progressions.   
+Topic option for the Music Theory Fundamentals
+
+Option to save, view or delete progressions.   
 
 Process:
 1. Start the program and display the main menu.
@@ -40,10 +42,12 @@ Process:
 14. Create a progression using the selected chords.
 15. Analyze the progression by identifying the degree of each chord and checking if it belongs to the selected key.
 16. Display the generated progression and its analysis.
-17. Store the generated progression in a temporary library.
-18. If the user chooses to view saved progressions, display them during the current session.
-19. Return to the main menu after each operation.
-20. Exit the program if they select the exit option.
+17. Store the generated progression in the current session library and save it permanently to progressions.txt.
+18. If the user chooses Music Theory Fundamentals, open a sub-menu explaining them.
+19. If the user chooses to view saved progressions, display them during the current session.
+20. If the user chooses to delete a saved progression, display the saved list from progressions.txt, ask for the progression number, remove it, and update the file.
+21. Return to the main menu after each operation.
+22. Exit the program if they select the exit option.
 
 Output:
 Generated scale and chords.
@@ -57,3 +61,7 @@ Whether each chord belongs to the key.
 Generated chord progression.   
 
 Saved or previously saved progressions.   
+
+Confirmation of deleted progressions.
+
+Music theory explanations.
