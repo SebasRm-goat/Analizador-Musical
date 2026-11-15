@@ -11,6 +11,7 @@ NOTES = ["C", "C#", "D", "D#", "E", "F","F#", "G", "G#", "A", "A#", "B"]
 SCALE_INTERVALS = [2, 2, 1, 2, 2, 2, 1]
 TRIAD_STEPS = [0, 2, 4]
 
+
 import random 
 
 
@@ -213,6 +214,87 @@ def generate_progression(chord_matrix, number_of_chords):
     return progression
 
 
+def save_progression(note, progression, analysis, file_name="progressions.txt"):
+    """Save a chord progression, its key and analysis in a text file."""
+
+    with open(file_name, "a", encoding="utf-8") as file:
+        progression_text = " - ".join(progression)
+
+        analysis_text = "; ".join(
+            ", ".join(str(item) for item in chord_analysis)
+            for chord_analysis in analysis
+        )
+
+        file.write(note + "|" + progression_text + "|" + analysis_text + "\n")
+
+    print("Progression saved successfully!")
+    
+    
+
+def read_progressions(file_name="progressions.txt"):
+    """Read saved progressions and separate their stored information."""
+
+    try:
+        with open(file_name, "r", encoding="utf-8") as file:
+            progressions = file.readlines()
+
+        progression_data = []
+
+        for line in progressions:
+            data = line.strip().split("|", 2)
+
+            if len(data) == 3:
+                progression_data.append(data)
+
+        return progression_data
+
+    except FileNotFoundError:
+        print("No saved progressions found.")
+        return []
+    
+    
+    
+def delete_progression(file_name="progressions.txt"):
+    """Delete a selected progression from the text file."""
+
+    try:
+        with open(file_name, "r", encoding="utf-8") as file:
+            progressions = file.readlines()
+
+        if len(progressions) == 0:
+            print("The progression library is empty.")
+            return
+
+        print("\nSAVED PROGRESSIONS")
+
+        for i in range(len(progressions)):
+            print(i + 1, "-", progressions[i].strip())
+
+        option = input("\nEnter the number of the progression to delete: ")
+
+        if not option.isdigit():
+            print("Please enter a valid number.")
+            return
+
+        option = int(option)
+
+        if option < 1 or option > len(progressions):
+            print("Invalid progression number.")
+            return
+
+        deleted_progression = progressions.pop(option - 1)
+
+        with open(file_name, "w", encoding="utf-8") as file:
+            file.writelines(progressions)
+
+        print("Progression deleted successfully!")
+        print("Deleted:", deleted_progression.strip())
+
+    except FileNotFoundError:
+        print("No saved progressions found.")
+        
+
+
 def analyze_progression(progression, chord_matrix):
     """Compare each chord against a matrix of diatonic triads."""
 
@@ -288,19 +370,94 @@ def display_major_scale(note):
     
 
 
-def display_progression_library(library):
-    """Display all progressions stored in the library matrix."""
+def display_progression_library():
+    """Display all progressions stored in the text file."""
 
-    if len(library) == 0:
+    progressions = read_progressions()
+
+    if len(progressions) == 0:
         print("The progression library is empty.")
         return
 
     print("\nSAVED PROGRESSIONS")
 
-    for progression_data in library:
-        print("\nKey:", progression_data[0], "| Progression:", progression_data[1])
-       
-        display_analysis(progression_data[2])
+    for progression_data in progressions:
+        print("\nKey:", progression_data[0])
+        print("Progression:", progression_data[1])
+        print("Analysis:", progression_data[2])
+        
+        
+def display_music_theory():
+    """Display basic music theory concepts to help users understand the program."""
+
+    while True:
+        print("\n===== MUSIC THEORY FUNDAMENTALS =====")
+        print("1. Musical Notes")
+        print("2. Scales")
+        print("3. Chords and Triads")
+        print("4. Chord Progressions")
+        print("5. Musical Degrees")
+        print("6. Return to main menu")
+
+        option = input("\nSelect a topic: ").strip()
+
+        if option == "1":
+            print("\n--- MUSICAL NOTES ---")
+            print("Musical notes are the basic elements of music.")
+            print("There are 12 different notes in the chromatic system:")
+            print("C, C#, D, D#, E, F, F#, G, G#, A, A#, B")
+            print("A sharp (#) raises a note by one semitone.")
+            print("A semitone is the distance between two consecutive notes.")
+
+        elif option == "2":
+            print("\n--- SCALES ---")
+            print("A scale is an organized sequence of musical notes.")
+            print("A major scale contains seven different notes.")
+            print("Its interval pattern is:")
+            print("Whole, Whole, Half, Whole, Whole, Whole, Half")
+            print("Example: C major = C - D - E - F - G - A - B")
+            print("The starting note gives the scale its name.")
+
+        elif option == "3":
+            print("\n--- CHORDS AND TRIADS ---")
+            print("A chord is formed by playing multiple notes together.")
+            print("A triad is a chord made of three notes:")
+            print("Root, Third and Fifth.")
+            print("Example: C major = C - E - G")
+            print("Major triads have a major third and a perfect fifth.")
+            print("Minor triads have a minor third and a perfect fifth.")
+            print("Diminished triads have a minor third and a diminished fifth.")
+
+        elif option == "4":
+            print("\n--- CHORD PROGRESSIONS ---")
+            print("A chord progression is a sequence of chords.")
+            print("It provides the harmonic foundation of a song.")
+            print("Example: C - G - Am - F")
+            print("You can enter progressions in this format")
+            print("when using the Analyze a chord progression option.")
+            print("Separate each chord with a hyphen.")
+
+        elif option == "5":
+            print("\n--- MUSICAL DEGREES ---")
+            print("Musical degrees indicate the position of a chord")
+            print("within a scale.")
+            print("In a C major scale, the diatonic chords are:")
+            print("I - C major")
+            print("ii - D minor")
+            print("iii - E minor")
+            print("IV - F major")
+            print("V - G major")
+            print("vi - A minor")
+            print("vii° - B diminished")
+            print("Uppercase Roman numerals represent major chords.")
+            print("Lowercase Roman numerals represent minor chords.")
+            print("The degree helps identify the harmonic function of a chord.")
+
+        elif option == "6":
+            break
+
+        else:
+            print("Invalid option. Please select a number from 1 to 6.")
     
     
 
@@ -366,8 +523,10 @@ def main():
         print("1. Generate a major scale and its triads")
         print("2. Analyze a chord progression")
         print("3. Generate a chord progression")
-        print("4. View saved progressions")
-        print("5. Exit")
+        print("4. Music theory fundamentals")
+        print("5. View saved progressions")
+        print("6. Delete a saved progression")
+        print("7. Exit")
 
         option = input("\nSelect an option: ").strip()
 
@@ -440,20 +599,28 @@ def main():
 
                         display_analysis(analysis)
 
-                        progression_library.append([note , " - ".join(progression) ,analysis])
+                        progression_library.append([note, " - ".join(progression), analysis])
 
-                        print("Progression saved in the current session.")
+                        save_progression(note, progression, analysis)
+
+                        print("Progression saved in the current session and in the file.")
 
         
         elif option == "4":
-            display_progression_library(progression_library)
+            display_music_theory()
 
         elif option == "5":
+            display_progression_library()
+            
+        elif option == "6":
+            delete_progression()
+            
+        elif option == "7":
             print("Thank you for using the program!")
             break
 
         else:
-            print("Invalid option. Please select 1, 2, 3, 4 or 5")
+            print("Invalid option. Please select 1, 2, 3, 4, 5 or 6")
 
 
 
