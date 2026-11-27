@@ -38,7 +38,7 @@ def get_note_index(note):
         zero position; otherwise, return -1.
 
     Outputs:
-        int: The note's index, or -1 when the note is invalid.
+        The note's index, or -1 when the note is invalid.
     """
 
     if note not in NOTES:
@@ -80,7 +80,7 @@ def generate_major_scale(note):
 
     Process:
         Validate the note, add it first, and apply the remaining major-scale
-        intervals to produce the following six notes.
+        intervals to write the following six notes.
 
     Outputs:
         list or None: Seven scale notes, or None for an invalid note.
@@ -106,8 +106,8 @@ def generate_minor_scale(note):
         note: The tonic, or starting note, of the scale.
 
     Process:
-        Validate the note, add it first, and apply the remaining natural minor
-        scale intervals to produce the following six notes.
+        Validate the note, add it first, and apply the remaining minor
+        scale intervals to make the following six notes.
 
     Outputs:
         list or None: Seven scale notes, or None for an invalid note.
@@ -134,8 +134,8 @@ def build_triad(scale, degree):
         degree: A degree between 0 and 6.
 
     Process:
-        Validate the scale length and degree, then select the root, third, and
-        fifth notes using TRIAD_STEPS and wraparound indexing.
+        Validate the scale length and degree. Select the root, third, and
+        fifth notes.
 
     Outputs:
         list or None: A three-note triad, or None for invalid inputs.
@@ -212,7 +212,7 @@ def get_chord_symbol(root, chord_type):
 
     Process:
         Select an empty suffix for major, "m" for minor, or "dim" for
-        diminished; return None for any unsupported chord type.
+        diminished.
 
     Outputs:
         str or None: The combined root and suffix, or None for unsupported
@@ -241,8 +241,8 @@ def build_chord_matrix(scale):
         scale: A valid seven-note musical scale.
 
     Process:
-        Validate the scale and, for every degree, build a triad, identify its
-        type and symbol, and store all four pieces of information in a row.
+        Validate the scale and for every degree, build a triad, identify its
+        type and symbol and store it.
 
     Outputs:
         list or None: A seven-row chord matrix, or None for an invalid
@@ -268,16 +268,6 @@ def build_chord_matrix(scale):
 
 def normalize_chord(chord_text):
     """Clean and validate a chord symbol entered as text.
-
-    Inputs:
-        chord_text: A chord such as "C", "Am", or "F#DIM".
-
-    Process:
-        Remove spaces, separate a possible sharp root from the
-        suffix, normalize capitalization, and validate the root and suffix.
-
-    Outputs:
-        str or None: A normalized chord symbol, or None for invalid text.
     """
 
     chord_text = chord_text.strip()
@@ -304,16 +294,6 @@ def normalize_chord(chord_text):
 
 def parse_progression(progression_text):
     """Convert a progression string into a validated chord list.
-
-    Inputs:
-        progression_text: Chord symbols separated by hyphens.
-
-    Process:
-        At least two chords, split with hyphens, and normalize
-        every chord; return None if any chord is invalid.
-
-    Outputs:
-        list or None: Normalized chords, or None for invalid input.
     """
 
     if progression_text == "":
@@ -344,7 +324,7 @@ def generate_progression(chord_matrix, number_of_chords):
         number_of_chords: The requested number of chords.
 
     Process:
-        Validate the matrix and minimum count, then randomly choose a matrix
+        Validate the matrix and then choose a matrix
         row for each requested chord and append its symbol.
 
     Outputs:
@@ -379,8 +359,8 @@ def save_progression(note, scale_type, progression, analysis,
             "progressions.txt".
 
     Process:
-        Convert the progression and analysis to pipe-separated text, append
-        the record to the file, and print a success message.
+        Convert the progression and analysis to a text with pipes like a
+        separation, append the record to the file.
 
     Outputs:
         None (the function writes to a file and displays a success message)
@@ -404,19 +384,6 @@ def save_progression(note, scale_type, progression, analysis,
 
 def read_progressions(file_name="progressions.txt"):
     """Read and parse saved chord progression records.
-
-    Inputs:
-        file_name: The text file to read. The default is
-            "progressions.txt".
-
-    Process:
-        Open the file, read each line, split valid records into four fields,
-        and collect the fields in a list. Handle a missing file by printing a
-        message.
-
-    Outputs:
-        list: Parsed records, or an empty list if the file is not
-        found.
     """
 
     try:
@@ -446,8 +413,8 @@ def delete_progression(file_name="progressions.txt"):
             default is "progressions.txt".
 
     Process:
-        Read the file, display numbered records, ask for a selection, validate
-        the number, remove the selected line, and rewrite the remaining lines.
+        Read the file, display what is stored, and remove the
+        selected line and rewrite the remaining lines.
 
     Outputs:
         None (the function displays information and may rewrite the file)
@@ -498,13 +465,12 @@ def analyze_progression(progression, chord_matrix):
         chord_matrix: Seven diatonic chord rows.
 
     Process:
-        For each chord, search the matrix for a matching symbol. Append its
+        Search the matrix for a matching symbol. Append its
         degree and "Inside the key" for a match, or "-" and "Outside the key"
         for no match.
 
     Outputs:
-        list or None: One three-item result per chord, or None when
-        required input is missing.
+        list or None
     """
 
     if progression is None or chord_matrix is None:
@@ -537,16 +503,6 @@ def analyze_progression(progression, chord_matrix):
 
 def display_progression_chart(analysis):
     """Display a bar chart of the analyzed progression.
-
-    Inputs:
-        analysis: Chord, degree, and key-location results.
-
-    Process:
-        Extract chord symbols and numeric degrees, use zero for chords outside
-        the key, set chart labels and title, and display the chart.
-
-    Outputs:
-        The function displays a matplotlib chart.
     """
 
     chords = []
@@ -571,16 +527,6 @@ def display_progression_chart(analysis):
 
 def display_chord_matrix(chord_matrix):
     """Display every row stored in a diatonic chord matrix.
-
-    Inputs:
-        chord_matrix: Rows containing degree, triad, type, and
-            chord symbol.
-
-    Process:
-        Print a heading and each row's degree, notes, chord type, and symbol.
-
-    Outputs:
-        The function displays the chord matrix
     """
 
     print("\nDIATONIC CHORDS")
@@ -596,16 +542,6 @@ def display_chord_matrix(chord_matrix):
 
 def display_analysis(analysis):
     """Display the results of a chord progression analysis.
-
-    Inputs:
-        analysis: Chord, degree, and key-location result rows.
-
-    Process:
-        Print a heading and each chord's symbol, degree, and key-location
-        result.
-
-    Outputs:
-        The function displays the analysis
     """
 
     print("\nPROGRESSION ANALYSIS")
@@ -620,16 +556,6 @@ def display_analysis(analysis):
 
 def display_major_scale(note):
     """Display a major scale and all of its diatonic triads.
-
-    Inputs:
-        note: The starting note of the major scale.
-
-    Process:
-        Generate the major scale, print an invalid-note message if necessary,
-        otherwise build the chord matrix and display the scale and triads.
-
-    Outputs:
-        The function displays information or an error message
     """
 
     scale = generate_major_scale(note)
@@ -646,17 +572,7 @@ def display_major_scale(note):
 
 
 def display_minor_scale(note):
-    """Display a natural minor scale and all of its diatonic triads.
-
-    Inputs:
-        note: The starting note of the natural minor scale.
-
-    Process:
-        Generate the minor scale, build the chord matrix, and display the
-        scale and triads.
-
-    Outputs:
-        The function displays information or an error message
+    """Display a minor scale and all of its diatonic triads.
     """
 
     scale = generate_minor_scale(note)
@@ -673,18 +589,8 @@ def display_minor_scale(note):
 
 
 def display_progression_library():
-    """Display saved progressions and analyze a selected record.
+    """Display saved progressions and analyze them.
 
-    Inputs:
-        None
-
-    Process:
-        Read saved records, print them with numbers, ask the user to select one
-        or return, analyze the saved progression, and display text and chart
-        results.
-
-    Outputs:
-        The function displays saved data, analysis, messages, or a chart
     """
 
     progressions = read_progressions()
@@ -749,16 +655,6 @@ def display_progression_library():
 
 def display_music_theory():
     """Show a menu of basic music theory topics.
-
-    Inputs:
-        None
-
-    Process:
-        Repeat a theory menu, read the user's choice, and print information
-        about the selected topic.
-
-    Outputs:
-        The function displays menu options and theory information
     """
 
     while True:
@@ -871,9 +767,9 @@ def tests():
 
     Process:
         Check notes and transposition, major and minor scales, chord
-        matrices and symbols, progression generation and parsing, analysis
-        results, and saved-file behavior. Clear the test file after its record
-        is verified and print a success message.
+        matrices and symbols, progression generation.
+        Clear the test file after is verified and
+        print a success message.
 
     Outputs:
         The function does test and prints "All tests passed."
@@ -1000,9 +896,8 @@ def main():
         None
 
     Process:
-        Repeat the main menu, read the user's choice, validate user input, and
-        do valid choices to theory, scale, progression, library, deletion,
-        or exit program.
+        Repeat the main menu, read the user's choice and
+        do valid choices for each option
 
     Outputs:
         The function displays menus and results.
